@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>admin</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+	<!--verification of brown email-->
+<body>
+	<div class="banner">
+		<img class=logo src="logo.png" alt="Language Matches">
+	</div>
+	
+	<div class="formdiv"> <!-- maybe make the background a different color when larger than a phone screen? -->
+		<h1>Admin Control</h1>
+		<h2>Control panel for administrators to control the rollout of the matching proccess</h2>
+		
+		<form onsubmit="return false;">
+			<!-- Deadline -->
+		  <div class="infodiv">
+				<div class="section-title">set deadline for sign-ups</div>
+				<p>set new deadline for submissions</p>
+
+			<div class="form-inputs">
+				<input type="date" name="deadline" value="" onChange="setDate(this.value);"/>
+			</div>
+		  </div>
+			
+			<!-- Create Matches -->
+			<div class="infodiv">
+				<div class="section-title">Notify Users</div>
+				<p>Notify users after the deadline has passed that their matches are ready</p>
+				<button class="admin-button" id="run">Notify</button>	
+			</div>
+
+			<!-- View Data -->
+			<div class="infodiv">
+				<div class="section-title">view data</div>
+				<p>view current users and matches</p>
+				<button class="admin-button" id="view-data">View Matched Users</button>	
+				<button class="admin-button" id="view-all">View All Users</button>	
+
+			</div>
+			
+			<!-- Reset Data -->
+			<div class="infodiv">
+				<div class="section-title">reset data</div>
+				<p>wipe current data for new submission period</p>
+				<button class="admin-button" id="reset">Reset</button>	
+			</div>
+
+			
+		</form>
+	</div>
+	
+	<div class="bottom-panel">
+		<!-- Sends back to the home screen-->
+		<form action="home.html">
+			<button class="log-out-button" id="log-out-button">Log Out</button>	
+		</form>
+	</div>
+	
+	<script src="admin.js"></script>
+</body>
+</html>
