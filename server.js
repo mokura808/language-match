@@ -753,6 +753,6 @@ app.post('/sendEmail', sendOut);
 
 
 app.listen(8081, function() {
-    console.log('- Server listening on port 8081');
-    console.log('ver.1');
+    console.log('yeet - Server listening on port 8081');
+    //console.log('ver.1');
 });
