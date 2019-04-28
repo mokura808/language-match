@@ -26,10 +26,18 @@ app.set('view engine', 'html'); // register .html extension as template engine s
 //app.use(express.static(__dirname+'/public'));
 app.use(express.static('public'));
 
-// Connection to SQL
+// Connection to SQL ***this needs to be updated to AWS database***
 const db = require('mysql');
-const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
-const conn = db.createConnection(url);
+//const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
+//const conn = db.createConnection(url);
+const connection = db.createConnection({
+  host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
+ port      :  8081,
+  user     : 'languagematchuser',
+  password : 'languagematchpass',
+  database : 'languagematchdb'
+
+});
 conn.connect();
 
 /*
