@@ -30,7 +30,7 @@ app.use(express.static('public'));
 const db = require('mysql');
 //const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
 //const conn = db.createConnection(url);
-const connection = db.createConnection({
+const conn = db.createConnection({
   host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
  port      :  8081,
   user     : 'languagematchuser',
