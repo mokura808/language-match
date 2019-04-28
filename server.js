@@ -28,7 +28,7 @@ app.use(express.static('public'));
 
 // Connection to SQL
 const db = require('mysql');
-const url = 'mysql://wzhou7:cs132@bdognom.cs.brown.edu/wzhou7_db';
+const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
 const conn = db.createConnection(url);
 conn.connect();
 
