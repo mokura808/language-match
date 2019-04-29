@@ -37,7 +37,7 @@ const conn = db.createConnection({
   user     : 'langmatchmaster',
   password : 'langmatchpass',
   database : 'languagematchdb',
-  timeout: 150000
+  timeout: 200000
 });
 
 conn.connect(function(err) {
