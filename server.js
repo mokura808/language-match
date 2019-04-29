@@ -28,17 +28,23 @@ app.use(express.static('public'));
 
 // Connection to SQL ***this needs to be updated to AWS database***
 const db = require('mysql');
-//const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
-//const conn = db.createConnection(url);
+const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
+const conn = db.createConnection(url);
+/*
 const conn = db.createConnection({
   host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
- port      :  8081,
-  user     : 'languagematchuser',
-  password : 'languagematchpass',
+ port      :  3306,
+  user     : 'langmatchmaster',
+  password : 'langmatchpass',
   database : 'languagematchdb'
-
 });
-conn.connect();
+*/
+conn.connect(function(err) {
+    if (err) {
+        return console.error('error: ' + err.message);
+      }
+      console.log('Connected to the MySQL server.');
+});
 
 /*
 
