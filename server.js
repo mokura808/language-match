@@ -36,7 +36,8 @@ const conn = db.createConnection({
  port      :  3306,
   user     : 'langmatchmaster',
   password : 'langmatchpass',
-  database : 'languagematchdb'
+  database : 'languagematchdb',
+  timeout: 100000
 });
 
 conn.connect(function(err) {
