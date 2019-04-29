@@ -26,59 +26,26 @@ app.set('view engine', 'html'); // register .html extension as template engine s
 //app.use(express.static(__dirname+'/public'));
 app.use(express.static('public'));
 
-// Connection to SQL ***this needs to be updated to AWS database***
+// Connection to SQL
 const db = require('mysql');
-//const url = 'mysql://mokura:cs132@bdognom.cs.brown.edu/mokura_db';
-//const conn = db.createConnection(url);
 
 const conn = db.createConnection({
-  host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
- port      :  3306,
-  user     : 'langmatchmaster',
-  password : 'langmatchpass',
-  database : 'langmatchmaster',
-  timeout: 200000
-});
+    host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
+   port      :  3306,
+    user     : 'langmatchmaster',
+    password : 'langmatchpass',
+    database : 'langmatchmaster',
+    timeout: 200000
+  });
+  
+  conn.connect(function(err) {
+      if (err) {
+          return console.error('error: ' + err.message);
+        }
+        console.log('Connected to the MySQL server.');
+  });
 
-conn.connect(function(err) {
-    if (err) {
-        return console.error('error: ' + err.message);
-      }
-      console.log('Connected to the MySQL server.');
-});
-
-/*
-
-conn.query('DROP TABLE users',function(error, data) {
-     if(error){
-        console.log(error)
-      }else{
-        console.log("user deleted");
-      }
-});
-conn.query('DROP TABLE learner',function(error, data) {
-     if(error){
-        console.log(error);
-      }else{
-        console.log("learner deleted");
-      }
-});
-conn.query('DROP TABLE teacher',function(error, data) {
-     if(error){
-        console.log(error)
-      }else{
-        console.log("teacher deleted");
-      }
-});
-conn.query('DROP TABLE matched_users',function(error, data) {
-     if(error){
-        console.log(error)
-      }else{
-        console.log("matched users deleted");
-      }
-}); */
-
-conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id INTEGER PRIMARY KEY AUTO_INCREMENT, bio TEXT, availability TEXT, matched INTEGER)', function(error, data) {
+conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id INTEGER PRIMARY KEY AUTO_INCREMENT, bio TEXT, availability TEXT, matched INTEGER, classyear TEXT)', function(error, data) {
     if (error) {
         console.log(error)
     } else {}
@@ -101,6 +68,11 @@ conn.query('CREATE TABLE if not exists matched_users(learner_id INTEGER, teacher
         console.log(error)
     } else {}
 });
+conn.query('CREATE TABLE if not exists languages(language TEXT)', function(error, data) {
+    if (error) {
+        console.log(error)
+    } else {}
+});
 // Variable to determine whether or not the form should be open, value 0 = open, 1 = closed
 var open = 0;
 app.post('/dateSumbitted', handledate);
@@ -113,9 +85,10 @@ function handledate(request, response) {
 app.get('/admin', function(request, response) {
     response.sendFile(__dirname + "/public/admin.html");
 });
+/*
 app.get('/admin-login', function(request, response) {
     response.sendFile(__dirname + "/public/admin-login.html");
-});
+});*/
 app.get('/closed-submissions', function(request, response) {
     if (open == 0) {
         response.sendFile(__dirname + "/public/home.html");
@@ -150,7 +123,7 @@ app.get('/submission_updated', function(request, response) {
 });
 
 app.post('/viewData', function(request, response) {
-    conn.query('SELECT c.language, c.firstname AS tfirst, c.lastname AS tlast, c.email AS temail, c.teacher_fluency, b.firstname AS lfirst, b.lastname AS llast, b.email AS lemail, c.learner_fluency FROM users AS b JOIN (SELECT a.firstname, a.lastname, a.email, matched_users.learner_id, matched_users.language, matched_users.teacher_fluency, matched_users.learner_fluency FROM \
+    conn.query('SELECT c.language, c.firstname AS tfirst, c.lastname AS tlast, c.email AS temail, c.classyear AS tclass, c.teacher_fluency, b.firstname AS lfirst, b.lastname AS llast, b.email AS lemail, b.classyear AS lclass, c.learner_fluency FROM users AS b JOIN (SELECT a.firstname, a.lastname, a.email, a.classyear, matched_users.learner_id, matched_users.language, matched_users.teacher_fluency, matched_users.learner_fluency FROM \
         users AS a JOIN matched_users WHERE a.id=matched_users.teacher_id) AS c WHERE b.id=c.learner_id', function(error, data) {
         console.log(data);
         response.json(data);
@@ -159,23 +132,60 @@ app.post('/viewData', function(request, response) {
 // to view all users who are signed up
 app.post('/viewAllUsers', function(request, response) {
     console.log("Post request for all users received");
-    conn.query('SELECT firstname AS tfirst, lastname, email, bio, availability FROM users', function(error, data) {
+    conn.query('SELECT firstname AS tfirst, lastname, email, bio, availability, classyear FROM users', function(error, data) {
         console.log(data)
         response.json(data);
         console.log("Sent all users data to browser");
     });
 });
 
+// to view learners who are unmatched
+app.post('/viewUnmatchedLearners', function(request, response) {
+    console.log("Post request for unmatched learners received");
+    conn.query('SELECT users.firstname AS lfirst, users.lastname, users.email, learner.language, learner.learner_fluency FROM learner JOIN users ON learner.learner_id=users.id', function(error, data) {
+        response.json(data);
+        console.log("Sent all unmatched learners data to browser");
+    });
+});
 
+// to view teachers who are unmatched
+app.post('/viewUnmatchedTeachers', function(request, response) {
+    console.log("Post request for unmatched teachers received");
+    conn.query('SELECT users.firstname AS tfirst, users.lastname, users.email, teacher.language, teacher.teacher_fluency FROM teacher JOIN users ON teacher.teacher_id=users.id', function(error, data) {
+        response.json(data);
+        console.log("Sent all unmatched teachers data to browser");
+    });
+});
+
+// send languages
+app.get('/getLanguages', function(request, response) {
+    console.log("Get request for languages list received");
+    conn.query('SELECT language FROM languages', function(error, data) {
+        response.json(data);
+        console.log("Sent offered languages to browser");
+    });
+
+});
+
+// send languages
+app.post('/updateLanguages', function(request, response) {
+    console.log("Post request for languages list received");
+
+    let languagesList = request.body.languages;
+
+    conn.query('DELETE FROM languages', function(error, data) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("old languages removed")
+            conn.query('INSERT INTO languages VALUES ?', [languagesList], function(error, data) {
+                console.log("Updated languages in server");
+            });
+        }
+    });
+});
 app.get('/partner-display/:userId', function(request, response) {
-    console.log("hello");
-    console.log(request.params.userId);
-    console.log("sandwith")
-    //response.send("404");
-    //console.log("get request")
-    //console.log(request.body.firstname);
-
-
+    
     conn.query('SELECT firstname, lastname, email FROM users WHERE id=?', [request.params.userId], function(error, data) {
 
         data.forEach(function(element) {
@@ -366,7 +376,7 @@ app.post('/checklogin', checklogin);
 
 function checklogin(request, response) {
     // check database for username and password
-    const email = request.body.email;
+    const email = request.body.email.toLowerCase();
     const password = request.body.password;
 
     // perform some check against user input here!!! Before performing query
@@ -433,7 +443,7 @@ function saveUser(request, response) {
     //console.log(firstname);
     const lastname = request.body.lastname;
     //console.log(lastname);
-    const email = request.body.email;
+    const email = request.body.email.toLowerCase();
     //console.log(email);
     const password = request.body.password;
     //console.log(password);
@@ -442,6 +452,8 @@ function saveUser(request, response) {
     const matched = 0;
     //console.log(bio);
     const availability = request.body.availability;
+    const classyear = request.body.classyear;
+
     //console.log(availability);
 
     //target list stores target langugages users want
@@ -452,9 +464,22 @@ function saveUser(request, response) {
     const spokenlist = request.body.spokenlist;
 
     let id_number;
+    conn.query('SELECT firstname FROM users WHERE email = ?', [email], function(error, data) {
 
+        var numUsers = 0;
 
-    conn.query('INSERT INTO users (firstname, lastname, email, password, bio, availability, matched) VALUES(?,?,?,?,?,?,?)', [firstname, lastname, email, password, bio, availability,matched], function(error, data) {
+        data.forEach(function(element) {
+            numUsers = numUsers + 1;
+        });
+        console.log("People with same email: " + numUsers.toString());
+      
+        // someone already using this email
+        if (numUsers > 0) {
+            response.send(true);
+            response.end();
+        } else {
+
+    conn.query('INSERT INTO users (firstname, lastname, email, password, bio, availability, matched, classyear) VALUES(?,?,?,?,?,?,?,?)', [firstname, lastname, email, password, bio, availability,matched, classyear], function(error, data) {
         if (error) {
             console.log(error);
         }
@@ -658,7 +683,9 @@ function saveUser(request, response) {
         });
     });
 
-    response.status(204).send();
+    response.send(false);
+    }
+});
 };
 
 // Post for Reseting User Data
@@ -695,7 +722,7 @@ function resetData(request, response) {
         }
     });
 
-    conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id INTEGER PRIMARY KEY AUTO_INCREMENT, bio TEXT, availability TEXT, matched INTEGER)', function(error, data) {
+    conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id INTEGER PRIMARY KEY AUTO_INCREMENT, bio TEXT, availability TEXT, matched INTEGER, classyear TEXT)', function(error, data) {
         if (error) {
             console.log(error)
         } else {}
@@ -735,6 +762,9 @@ app.post('/sendEmail', sendOut);
           }
       });
       
+      if(to_list.length == 0){
+
+        }else{
       
 
     let transporter = nodemailer.createTransport({
@@ -761,6 +791,7 @@ app.post('/sendEmail', sendOut);
             console.log('Email sent: ' + info.response);
         }
     });
+}
 };
 
 
@@ -768,6 +799,6 @@ app.post('/sendEmail', sendOut);
 
 
 app.listen(8081, function() {
-    console.log('yeet - Server listening on port 8081');
-    //console.log('ver.1');
+    console.log('- Server listening on port 8081');
+    console.log('updated: 4-29-2019 7:27');
 });
