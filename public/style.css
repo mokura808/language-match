@@ -34,7 +34,7 @@ h1 {
   border-color: #f26d7d;
   color: #0b4c67;
   font-family: "Avenir Next";
-  font-weight: 10px;
+  font-weight: bold;
 }
 
 
@@ -53,7 +53,7 @@ h1 {
   opacity: 1;
   font-size: 16px;
   font-family: "Euphemia UCAS";
-  font-weight: 10px;
+  font-weight: bold;
 }
 
 .form-inputs {
@@ -73,7 +73,7 @@ input {
   padding: 5px;
   align-self: center;
   font-family: "Euphemia UCAS";
-  font-weight: 10px;
+  font-weight: bold;
 }
 
 textarea {
@@ -206,7 +206,7 @@ textarea {
 }
 h2 {
   font-size: 22px;
-  font-weight: 10px;
+  font-weight: bold;
   width: 70%;
   align-self: center;
   font-family: "HelveticaNeue-Thin", "Helvetica Neue Thin", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
