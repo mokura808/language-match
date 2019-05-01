@@ -25,45 +25,77 @@ app.set('views', __dirname + '/templates');
 app.set('view engine', 'html'); // register .html extension as template engine so we can render .html pages
 //app.use(express.static(__dirname+'/public'));
 app.use(express.static('public'));
+var passport = require('passport');
+
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(userid) {
+    //use query to make sure the user exits 
+
+  }
+));
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 // Connection to SQL
 const db = require('mysql');
+const url = 'mysql://wzhou7:cs132@bdognom.cs.brown.edu/wzhou7_db';
+const conn = db.createConnection(url);
+conn.connect();
 
-const conn = db.createConnection({
-    host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
-   port      :  3306,
-    user     : 'langmatchmaster',
-    password : 'langmatchpass',
-    database : 'langmatchmaster',
-    timeout: 200000
-  });
-  
-  conn.connect(function(err) {
-      if (err) {
-          return console.error('error: ' + err.message);
+function generateRandomIdentifier() {
+  // make a list of legal characters
+  // we're intentionally excluding 0, O, I, and 1 for readability
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+  let result = '';
+  for (let i = 0; i < 10; i++){
+    result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    conn.query('SELECT firstname FROM users WHERE id=?',[result],function(error,data){
+        let count = 0;
+        data.forEach(function(error){
+            count = count + 1;
+        })
+        if(count > 0){
+            result = generateRandomIdentifier();
         }
-        console.log('Connected to the MySQL server.');
-  });
+    });
+  return result;
+}
 
-conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id INTEGER PRIMARY KEY AUTO_INCREMENT, bio TEXT, availability TEXT, matched INTEGER, classyear TEXT)', function(error, data) {
+conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id TEXT, bio TEXT, availability TEXT, matched INTEGER, classyear TEXT)', function(error, data) {
     if (error) {
         console.log(error)
     } else {}
 });
 
-conn.query('CREATE TABLE if not exists learner(learner_id INTEGER, language TEXT ,learner_fluency TEXT)', function(error, data) {
+conn.query('CREATE TABLE if not exists learner(learner_id TEXT, language TEXT ,learner_fluency TEXT)', function(error, data) {
     if (error) {
         console.log(error)
     } else {}
 });
 
-conn.query('CREATE TABLE if not exists teacher(teacher_id INTEGER, language TEXT ,teacher_fluency TEXT)', function(error, data) {
+conn.query('CREATE TABLE if not exists teacher(teacher_id TEXT, language TEXT ,teacher_fluency TEXT)', function(error, data) {
     if (error) {
         console.log(error)
     } else {}
 });
 
-conn.query('CREATE TABLE if not exists matched_users(learner_id INTEGER, teacher_id INTEGER, language TEXT, learner_fluency TEXT, teacher_fluency TEXT)', function(error, data) {
+conn.query('CREATE TABLE if not exists matched_users(learner_id TEXT, teacher_id TEXT, language TEXT, learner_fluency TEXT, teacher_fluency TEXT)', function(error, data) {
     if (error) {
         console.log(error)
     } else {}
@@ -184,20 +216,29 @@ app.post('/updateLanguages', function(request, response) {
         }
     });
 });
+
 app.get('/partner-display/:userId', function(request, response) {
-    
+   
+    let count = 0; 
     conn.query('SELECT firstname, lastname, email FROM users WHERE id=?', [request.params.userId], function(error, data) {
 
         data.forEach(function(element) {
+            count = count + 1;
             response.render('partner-display.html', {
                 firstname: element['firstname'],
                 lastname: element['lastname'],
                 email: element['email'],
                 user_id: request.params.userId
             });
-        });
+            
+       });
+            if(count == 0){
+                response.redirect('/404');
+            }
     });
+    
 });
+
 app.post('/displayPartners', displayPartners);
 
 function displayPartners(request, response) {
@@ -207,8 +248,6 @@ function displayPartners(request, response) {
     //finds matches where user is learner
     let yourTeachers_list = [];
     let yourTeachers_final = [];
-    console.log("testing id");
-    console.log(request.body.user_id);
 
 
     conn.query('SELECT learner_id, language, learner_fluency FROM matched_users WHERE teacher_id = ?', [request.body.user_id], function(err, teach, fields) {
@@ -358,6 +397,13 @@ function displayPartners(request, response) {
                     });
                 }
             }
+            //BOTH EMPTY
+            if (whoYouTeach_list.length == 0 && yourTeachers_list.length == 0) {
+
+                 response.send([whoYouTeach_final,yourTeachers_final]);
+           
+
+            }
 
         });
     });
@@ -401,31 +447,13 @@ function checklogin(request, response) {
             if (open == 0) { // matching algorithm hasn't taken place yet
                 // render results page displaying message that they should check back/keep
                 // an eye out for an email for when their language partner has been selected
-                //response.sendFile(__dirname + "/public/match-not-ready.html");
-                //response.render('partner-display.html', {firstname: firstname, lastname: lastname, email: email, user_id: user_id});
-                //response.locals = firstname: firstname;
-                // response.send("hi");
                 response.send([true, false, user_id]);
-                // response.redirect(301, `/partner-display?user_id${user_id}`);
-                // response.set('Content-Type', 'text/html');
-                // response.render('partner-display.html', {firstname:firstname, lastname: lastname, email: email, user_id: user_id});
-                //response.end();
-                //response.send([true,false, user_id, firstname, lastname]);
-
-                //  response.sendFile('/public/match-not-ready.html',{root: __dirname});
-
 
             } else { // matching has taken place; find matches in matched_users database
-
                 // IDEA: render partner-display.html, and in the partner-display js, make post request
                 // to retrieve the partner data
                 response.send([true, true, user_id]);
-
-                //response.send([true,true,user_id, firstname, lastname]);
-                //response.render('partner-display.html', {})
-
             }
-
         } else { // no user was found! send info in callback
             // either incorrect email/password or doesn't exist in database
             // send "userExists" as parameter
@@ -479,7 +507,8 @@ function saveUser(request, response) {
             response.end();
         } else {
 
-    conn.query('INSERT INTO users (firstname, lastname, email, password, bio, availability, matched, classyear) VALUES(?,?,?,?,?,?,?,?)', [firstname, lastname, email, password, bio, availability,matched, classyear], function(error, data) {
+    let id = generateRandomIdentifier();
+    conn.query('INSERT INTO users (firstname, lastname, email, password, bio, availability, matched, classyear,id) VALUES(?,?,?,?,?,?,?,?,?)', [firstname, lastname, email, password, bio, availability,matched, classyear,id], function(error, data) {
         if (error) {
             console.log(error);
         }
@@ -491,10 +520,8 @@ function saveUser(request, response) {
             }
         });
         conn.query('SELECT LAST_INSERT_ID();', function(error, data2) {
-            id_number = data2[0]['LAST_INSERT_ID()'];
-            console.log(id_number);
-             console.log("targetlist learner")
-             console.log(targetlist);
+           // id_number = data2[0]['LAST_INSERT_ID()'];
+            id_number = id;
              if(targetlist != undefined){
             for (let i = 0; i < targetlist.length; i++) {
                 // each entry is a language and proficiency
@@ -722,25 +749,25 @@ function resetData(request, response) {
         }
     });
 
-    conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id INTEGER PRIMARY KEY AUTO_INCREMENT, bio TEXT, availability TEXT, matched INTEGER, classyear TEXT)', function(error, data) {
+    conn.query('CREATE TABLE if not exists users(firstname TEXT, lastname TEXT, email TEXT, password TEXT, id TEXT, bio TEXT, availability TEXT, matched INTEGER, classyear TEXT)', function(error, data) {
         if (error) {
             console.log(error)
         } else {}
     });
 
-    conn.query('CREATE TABLE if not exists learner(learner_id INTEGER, language TEXT ,learner_fluency TEXT)', function(error, data) {
+    conn.query('CREATE TABLE if not exists learner(learner_id TEXT, language TEXT ,learner_fluency TEXT)', function(error, data) {
         if (error) {
             console.log(error)
         } else {}
     });
 
-    conn.query('CREATE TABLE if not exists teacher(teacher_id INTEGER, language TEXT ,teacher_fluency TEXT)', function(error, data) {
+    conn.query('CREATE TABLE if not exists teacher(teacher_id TEXT, language TEXT ,teacher_fluency TEXT)', function(error, data) {
         if (error) {
             console.log(error)
         } else {}
     });
 
-    conn.query('CREATE TABLE if not exists matched_users(learner_id INTEGER, teacher_id INTEGER, language TEXT, learner_fluency TEXT, teacher_fluency TEXT)', function(error, data) {
+    conn.query('CREATE TABLE if not exists matched_users(learner_id TEXT, teacher_id TEXT, language TEXT, learner_fluency TEXT, teacher_fluency TEXT)', function(error, data) {
         if (error) {
             console.log(error)
         } else {}
@@ -796,9 +823,6 @@ app.post('/sendEmail', sendOut);
 
 
 
-
-
 app.listen(8081, function() {
     console.log('- Server listening on port 8081');
-    console.log('updated: 4-29-2019 7:27');
 });
