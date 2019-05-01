@@ -9,7 +9,7 @@ var open = 1;
 // open = 0 means open, open = 1 means closed 
 var username = prompt("Enter the admin username");
 var password = prompt("Enter the admin password");
-    document.getElementById("banner").style.display = "";
+document.getElementById("banner").style.display = "";
 
 
 if(username == 'admin' && password =='matchme'){
