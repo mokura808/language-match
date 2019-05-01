@@ -52,9 +52,22 @@ app.use(passport.session());
 
 // Connection to SQL
 const db = require('mysql');
-const url = 'mysql://wzhou7:cs132@bdognom.cs.brown.edu/wzhou7_db';
-const conn = db.createConnection(url);
-conn.connect();
+
+const conn = db.createConnection({
+    host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
+   port      :  3306,
+    user     : 'langmatchmaster',
+    password : 'langmatchpass',
+    database : 'langmatchmaster',
+    timeout: 200000
+  });
+  
+  conn.connect(function(err) {
+      if (err) {
+          return console.error('error: ' + err.message);
+        }
+        console.log('Connected to the MySQL server.');
+  });
 
 function generateRandomIdentifier() {
   // make a list of legal characters
