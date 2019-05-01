@@ -65,7 +65,7 @@ addSpokenButton.addEventListener("click", function() {
 	var newTextBox = document.createElement("select");
 	newTextBox.className += "dropdown";
 	newTextBox.name += "spokenlanguage" + idSpokenLang.toString();
-  newTextBox.id = "spokenlanguage" + idSpokenLang.toString();
+  	newTextBox.id = "spokenlanguage" + idSpokenLang.toString();
 	newTextBox.innerHTML = '<option value="default">Select one</option>' 
 	/*'<option value="albanian">Albanian</option>' +
 	'<option value="arabic">Arabic</option>' +
@@ -84,13 +84,16 @@ addSpokenButton.addEventListener("click", function() {
 	'<option value="spanish">Spanish</option>' +
 	'<option value="tagalog">Tagalog</option>' +
 	'<option value="vietnamese">Vietnamese</option>' +
-	'<option value="urdu">Urdu</option>' +
-	'<option value="other">Other</option>';*/
+	'<option value="urdu">Urdu</option>' */+
+	'<option value="other">Other</option>';
 	getLanguages(newTextBox);
 
+	newFormInput.innerHTML = "Language:";
 	newFormInput.appendChild(newTextBox);
 
+
 	var newInLangDiv = document.createElement("div");
+
 	newInLangDiv.className += "langdivinternal";
 
 	var newProfDiv = document.createElement("div");
@@ -100,7 +103,7 @@ addSpokenButton.addEventListener("click", function() {
 	var newDropDown = document.createElement("select");
 	newDropDown.className += "dropdown";
 	newDropDown.name += "spokenprof" + idSpokenLang.toString();
-  newDropDown.id = "spokenprof" + idSpokenLang.toString();
+  	newDropDown.id = "spokenprof" + idSpokenLang.toString();
 	newDropDown.innerHTML = '<option value="default">Select one</option>' +
 	'<option value="intermediate">Intermediate</option>' +
 	'<option value="advanced">Advanced</option>' +
@@ -232,9 +235,10 @@ addTargetButton.addEventListener("click", function() {
 	'<option value="spanish">Spanish</option>' +
 	'<option value="tagalog">Tagalog</option>' +
 	'<option value="vietnamese">Vietnamese</option>' +
-	'<option value="urdu">Urdu</option>' +
-	'<option value="other">Other</option>';*/
+	'<option value="urdu">Urdu</option>' */+
+	'<option value="other">Other</option>';
 	getLanguages(newTextBox);
+	newFormInput.innerHTML = "Language:";
 
 	newFormInput.appendChild(newTextBox);
 
