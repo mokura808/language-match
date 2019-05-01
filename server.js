@@ -825,4 +825,5 @@ app.post('/sendEmail', sendOut);
 
 app.listen(8081, function() {
     console.log('- Server listening on port 8081');
+    console.log('running version 5/1');
 });
