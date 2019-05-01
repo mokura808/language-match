@@ -43,15 +43,13 @@ loginButton.addEventListener("click", function() {
 
 			}else{
 				var user_id = userExists[2];
-				//window.location.href = "/partner-display?user_id=1";
-				
+				//console.log("fitst cooke")				
+			//	document.cookie = "userid=${user_id}";
+				//console.log(document.cookie);
+
 				window.location.href = "/partner-display/" + user_id;
-
-
-				//console.log(userExists[2]);
-				//console.log(userExists[3]);
-				
 				//$.get('/partner-display/' + user_id);
+				//$.post('/partner-display2/', {user_id:user_id});
 			}
 			// do nothing (shouldn't get here); new page should get rendered
 			// OR set window.location to be partner-display.html, with the packed data entailing user id
@@ -72,10 +70,4 @@ loginButton.addEventListener("click", function() {
 		//		their language partner(s) for a given language, and the partner's information
 	});
 
-
-	// if(document.getElementById("password").value == "password"){
-	// 	window.location.href = "home.html";
-	// }else{
-	// 	alert("Email password combination incorrect, please try again");
-	// }
 });
