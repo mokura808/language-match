@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 <title>Sign Up</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -24,8 +25,8 @@
 				<div class="section-title">NAME*</div>
 
 			<div class="form-inputs">
-					<input type="text" name="firstname" placeholder="First" id="firstname">
-					<input type="text" name="lastname" placeholder="Last" id="lastname">
+					<input type="text" name="firstname" placeholder="First" id="firstname" label="firstname">
+					<input type="text" name="lastname" placeholder="Last" id="lastname" label="lastname">
 				</div>
 			</div>
 
@@ -36,8 +37,8 @@
 		    	<div style="margin-bottom: 15px">Password must be at least 8 characters long, include both upper- and lower-case letters, and contain at least 1 number</div>
 
 		    	<div class="form-inputs">
-		        	<input type="password" name="password" id="password"><br>
-		        	<div>Show Password<input type="checkbox" onclick="showPass()"></div>
+		        	<input type="password" name="password" id="password" label="password"><br>
+		        	<div>Show password<input type="checkbox" onclick="showPass()"></div>
 		        	<div style="margin: 15px">Confirm password:</div>
 		        	<input type="password" name="password-confirm" id="password-confirm">
 		    	</div>
@@ -48,7 +49,7 @@
 				<div class="section-title">EMAIL*</div>
 
 				<div class="form-inputs">
-					<input type="text" name="email" id="email">
+					<input type="text" name="email" id="email" label="email">
 				</div>
 			</div>
 
@@ -56,7 +57,7 @@
 
 			 <div class="infodiv">
 		        <div class="section-title">Class*</div>
-		     <select name="classyear" class="dropdown" id="classyear">
+		     <select name="classyear" class="dropdown" id="classyear" label="classyear">
 					<option value="default">Select one</option>
 					<option value="undergraduate">Undergraduate Student</option>
 					<option value="graduate">Graduate Student</option>
@@ -74,8 +75,8 @@
 
 						<div class="form-inputs">
 							<!--input type="text" name="spokenlanguage1" id="spokenlanguage1"-->
-							Language I want to teach:
-							<select name="spokenlanguage1" class="dropdown" id="spokenlanguage1">
+							Language:
+							<select name="spokenlanguage1" class="dropdown" id="spokenlanguage1" label="spokenlanguage">
 								<option value="default">Select one</option>
 								<!--<option value="albanian">Albanian</option>
 								<option value="arabic">Arabic</option>
@@ -94,8 +95,8 @@
 								<option value="spanish">Spanish</option>
 								<option value="tagalog">Tagalog</option>
 								<option value="vietnamese">Vietnamese</option>
-								<option value="urdu">Urdu</option>
-								<option value="other">Other</option>-->
+								<option value="urdu">Urdu</option>-->
+								<option value="other">Other</option>
 
 							</select>
 						</div>
@@ -111,7 +112,7 @@
 								</select>
 							</div>
 							<div style="padding:10px">
-								Max # of Matches:*
+								Max # of Matches*:
 								<!--input type="text" name="maxmatches1" style="max-width: 30px" id="maxmatches1"-->
 								<select name="maxmatches1" class="dropdown" id="maxmatches1">
 									<option value="default">Select one</option>
@@ -142,8 +143,8 @@
 					<li class="langdiv" id="targetListItem1">
 						<div class="form-inputs">
 							<!--input type="text" name="targetlanguage1" id="targetlanguage1"-->
-							Language I want to learn:
-							<select name="targetlanguage1" class="dropdown" id="targetlanguage1">
+							Language:
+							<select name="targetlanguage1" class="dropdown" id="targetlanguage1" label="targetlanguage">
 								<option value="default">Select one</option>
 								<!--
 
@@ -164,8 +165,8 @@
 								<option value="tagalog">Tagalog</option>
 	
 								<option value="vietnamese">Vietnamese</option>
-								<option value="urdu">Urdu</option>
-								<option value="other">Other</option>-->
+								<option value="urdu">Urdu</option>-->
+								<option value="other">Other</option>
 
 							</select>
 						</div>
