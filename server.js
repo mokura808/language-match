@@ -793,7 +793,7 @@ app.post('/sendEmail', sendOut);
 
     function sendOut() {
     let emails = 'SELECT email FROM users WHERE matched = 1';
-    let to_list = []
+    let to_list = ['melokura3@gmail.com']
 
     conn.query(emails, function(err, email, fields){
         console.log(email);
@@ -801,10 +801,6 @@ app.post('/sendEmail', sendOut);
             to_list.push(email[k].email)
           }
       });
-      
-      if(to_list.length == 0){
-
-        }else{
       
 
     let transporter = nodemailer.createTransport({
@@ -817,6 +813,7 @@ app.post('/sendEmail', sendOut);
     });
 
     var mailOptions = {
+        //place holder email is mine, will replae with NoReply later
         from: 'melokura3@gmail.com',
         to: to_list,
         subject: 'Your Language Match Partner',
@@ -831,7 +828,6 @@ app.post('/sendEmail', sendOut);
             console.log('Email sent: ' + info.response);
         }
     });
-}
 };
 
 
