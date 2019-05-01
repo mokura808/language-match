@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 <meta charset="UTF-8">
 <title>404</title>
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -19,10 +20,17 @@
 
     <input type="submit" value="Home" class="log-in-button" id="log-in-button">
 	
-	<div class="bottom-panel">
-		<img class=brownlogo src="brownlogo.png" alt="Brown Logo">
-	</div>
+
 	
-	<script src="404.js"></script>
+	<!--<script src="404.js"></script>-->
+	<script type="text/javascript">
+		
+	var loginButton = document.getElementById("log-in-button");
+	loginButton.addEventListener("click", function() {
+	 window.location.href = "/home";
+	}
+
+);
+	</script>
 </body>
 </html>
