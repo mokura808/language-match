@@ -34,9 +34,12 @@ h1 {
   border-color: #f26d7d;
   color: #0b4c67;
   font-family: "Avenir Next";
-  font-weight: bold;
+  font-weight: 10px;
 }
 
+html{
+  height: 100%;
+}
 
 .section-title {
   background-color: #ebebeb;
@@ -53,7 +56,7 @@ h1 {
   opacity: 1;
   font-size: 16px;
   font-family: "Euphemia UCAS";
-  font-weight: bold;
+  font-weight: 10px;
 }
 
 .form-inputs {
@@ -73,7 +76,7 @@ input {
   padding: 5px;
   align-self: center;
   font-family: "Euphemia UCAS";
-  font-weight: bold;
+  font-weight: 10px;
 }
 
 textarea {
@@ -84,7 +87,7 @@ textarea {
   border-color: dimgray;
   padding: 5px;
   align-self: center;
-  min-width: 500px; 
+  min-width: 100%; 
   min-height: 100px;
 }
 
@@ -106,10 +109,12 @@ textarea {
   min-width: 140px;
   background-color: #008080;
   border-radius: 20px;
-  border-style: solid;
-  border-color: black;
   color: #dae1e4;
   font-size: 18px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
 }
 .pink-header{
   color: #f26d7d;
@@ -132,6 +137,9 @@ textarea {
   color: #dae1e4;
   font-size: 18px;
   margin-bottom: 55px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 .log-in-button {
   margin: 30px;
@@ -142,6 +150,9 @@ textarea {
   border-style: none;
   color: #dae1e4;
   font-size: 18px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   margin-bottom: 55px;
 }
 .submit-button {
@@ -154,6 +165,9 @@ textarea {
   color: #dae1e4;
   font-size: 18px;
   margin-bottom: 55px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .langdiv {
@@ -181,6 +195,9 @@ textarea {
   background-color: #f4ca49;
   width: 90px;
   align-self: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 .add-lang-button {
   margin-bottom: 25px;
@@ -190,6 +207,9 @@ textarea {
   font-size: 14px;
   padding: 9px;
   background-color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .bottom-panel {
@@ -202,11 +222,12 @@ textarea {
   right: 0;
   flex: 1;
   align-self: center;
+  position: static;
 
 }
 h2 {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 10px;
   width: 70%;
   align-self: center;
   font-family: "HelveticaNeue-Thin", "Helvetica Neue Thin", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -305,6 +326,12 @@ h3 {
   height: 3000px;
   width: 3000px;
   z-index: 100;
+  position: fixed;
+  width: 100%;
+  align-self: center;
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 .section-label {
@@ -312,7 +339,7 @@ h3 {
 }
 .section-description{
   margin-bottom: 15px;
-  max-width: 70px;
+  max-width: 70%;
 }
 
 .partnerInfo div {
@@ -330,7 +357,6 @@ h3 {
 
 body {
   display: flex;
-  height: 100%;
   flex-direction: column;
   text-align: center;
   background-color: white;
@@ -341,6 +367,8 @@ body {
 }
 .checkwrapper{
     padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .checkbox{
