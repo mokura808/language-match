@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 <title>Partner Display</title>
 
 <link rel="stylesheet" type="text/css" href="../style.css">
@@ -53,26 +54,30 @@
 // {{roomName}}
 
 // get user_id
-		var logoutButton = document.getElementById("log-out-button");
-		logoutButton.addEventListener("click", function() {
-		   window.location.href = "../home";
-		  }
-		);
+//var username = prompt("Enter your email");
+//var password = prompt("Enter your password");
 
 
-		var user_id = document.getElementById("welcome-message").title;
+var logoutButton = document.getElementById("log-out-button");
+logoutButton.addEventListener("click", function() {
+   window.location.href = "../home";
+  }
+);
 
-		$.post('/displayPartners', {user_id: user_id}, function(final_list) {
-		  // callback
 
-		  // get list elements to populate
-		  var teachers_list = final_list[0];
-		  var learners_list = final_list[1];
+var user_id = document.getElementById("welcome-message").title;
 
-		  var teachersContainer = document.getElementById("teachers-container");
-		  var learnersContainer = document.getElementById("learners-container");
-		  let partnerLists = [[teachers_list, teachersContainer], [learners_list, learnersContainer]];
+$.post('/displayPartners', {user_id: user_id}, function(final_list) {
+  // callback
+  console.log("here");
+  // get list elements to populate
+  var teachers_list = final_list[0];
+  var learners_list = final_list[1];
 
+  var teachersContainer = document.getElementById("teachers-container");
+  var learnersContainer = document.getElementById("learners-container");
+  let partnerLists = [[teachers_list, teachersContainer], [learners_list, learnersContainer]];
+  console.log("here2");
   partnerLists.forEach(function(list) {
     var counter = 0;
     list[0].forEach(function(person) {
@@ -119,7 +124,10 @@
     });
 
     // if no partners, then display something else
+    console.log("counter")
+    console.log(counter)
     if (counter == 0) {
+      console.log("hits here")
       // display default
       //list[1].innerHTML = "Sorry, no matches to display! Please check back ";
       list[1].innerHTML = "Looks like you've requested a unique language! Sorry we don't have any matches for you. \
