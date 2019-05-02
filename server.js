@@ -52,22 +52,9 @@ app.use(passport.session());
 
 // Connection to SQL
 const db = require('mysql');
-
-const conn = db.createConnection({
-    host     : 'languagematchdb.cty6zyohkstq.us-east-2.rds.amazonaws.com',
-   port      :  3306,
-    user     : 'langmatchmaster',
-    password : 'langmatchpass',
-    database : 'langmatchmaster',
-    timeout: 200000
-  });
-  
-  conn.connect(function(err) {
-      if (err) {
-          return console.error('error: ' + err.message);
-        }
-        console.log('Connected to the MySQL server.');
-  });
+const url = 'mysql://wzhou7:cs132@bdognom.cs.brown.edu/wzhou7_db';
+const conn = db.createConnection(url);
+conn.connect();
 
 function generateRandomIdentifier() {
   // make a list of legal characters
@@ -119,7 +106,7 @@ conn.query('CREATE TABLE if not exists languages(language TEXT)', function(error
     } else {}
 });
 // Variable to determine whether or not the form should be open, value 0 = open, 1 = closed
-var open = 0;
+var open = 1;
 app.post('/dateSumbitted', handledate);
 
 function handledate(request, response) {
@@ -146,12 +133,7 @@ app.get('/home', function(request, response) {
 });
 
 app.get('/user-login', function(request, response) {
-    console.log(open);
-    if (open == 0) {
-        response.sendFile(__dirname + "/public/user-login.html");
-    } else {
-        response.sendFile(__dirname + "/public/closed-submissions.html");
-    }
+    response.sendFile(__dirname + "/public/user-login.html");
 });
 app.get('/match-not-ready', function(request, response) {
     response.sendFile(__dirname + "/public/match-not-ready.html");
@@ -187,7 +169,7 @@ app.post('/viewAllUsers', function(request, response) {
 // to view learners who are unmatched
 app.post('/viewUnmatchedLearners', function(request, response) {
     console.log("Post request for unmatched learners received");
-    conn.query('SELECT users.firstname AS lfirst, users.lastname, users.email, learner.language, learner.learner_fluency FROM learner JOIN users ON learner.learner_id=users.id', function(error, data) {
+    conn.query('SELECT users.firstname AS lfirst, users.lastname, users.email, users.classyear, learner.language, learner.learner_fluency FROM learner JOIN users ON learner.learner_id=users.id', function(error, data) {
         response.json(data);
         console.log("Sent all unmatched learners data to browser");
     });
@@ -196,7 +178,7 @@ app.post('/viewUnmatchedLearners', function(request, response) {
 // to view teachers who are unmatched
 app.post('/viewUnmatchedTeachers', function(request, response) {
     console.log("Post request for unmatched teachers received");
-    conn.query('SELECT users.firstname AS tfirst, users.lastname, users.email, teacher.language, teacher.teacher_fluency FROM teacher JOIN users ON teacher.teacher_id=users.id', function(error, data) {
+    conn.query('SELECT users.firstname AS tfirst, users.lastname, users.email, users.classyear, teacher.language, teacher.teacher_fluency FROM teacher JOIN users ON teacher.teacher_id=users.id', function(error, data) {
         response.json(data);
         console.log("Sent all unmatched teachers data to browser");
     });
@@ -231,7 +213,10 @@ app.post('/updateLanguages', function(request, response) {
 });
 
 app.get('/partner-display/:userId', function(request, response) {
-   
+    if (open == 0) {
+        response.redirect('/match-not-ready');
+    } else {
+    
     let count = 0; 
     conn.query('SELECT firstname, lastname, email FROM users WHERE id=?', [request.params.userId], function(error, data) {
 
@@ -249,6 +234,7 @@ app.get('/partner-display/:userId', function(request, response) {
                 response.redirect('/404');
             }
     });
+    }
     
 });
 
@@ -415,16 +401,11 @@ function displayPartners(request, response) {
 
                  response.send([whoYouTeach_final,yourTeachers_final]);
            
-
             }
 
         });
     });
 }
-
-// response.render('partner-display.html', {firstname:"Jamie", lastname: "A", email: "email", user_id: "id",password:"pass"});
-//response.sendFile(__dirname + "/templates/partner-display.html");
-
 
 app.get('/*', function(request, response) {
     response.sendFile(__dirname + "/public/404.html");
@@ -793,7 +774,7 @@ app.post('/sendEmail', sendOut);
 
     function sendOut() {
     let emails = 'SELECT email FROM users WHERE matched = 1';
-    let to_list = ['melokura3@gmail.com']
+    let to_list = []
 
     conn.query(emails, function(err, email, fields){
         console.log(email);
@@ -801,6 +782,10 @@ app.post('/sendEmail', sendOut);
             to_list.push(email[k].email)
           }
       });
+      
+      if(to_list.length == 0){
+
+        }else{
       
 
     let transporter = nodemailer.createTransport({
@@ -813,7 +798,6 @@ app.post('/sendEmail', sendOut);
     });
 
     var mailOptions = {
-        //place holder email is mine, will replae with NoReply later
         from: 'melokura3@gmail.com',
         to: to_list,
         subject: 'Your Language Match Partner',
@@ -828,11 +812,11 @@ app.post('/sendEmail', sendOut);
             console.log('Email sent: ' + info.response);
         }
     });
+}
 };
 
 
 
 app.listen(8081, function() {
     console.log('- Server listening on port 8081');
-    console.log('running version 5/1');
 });
