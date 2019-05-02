@@ -1,43 +1,12 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
-<title>admin login</title>
-<link rel="stylesheet" type="text/css" href="style.css">
-</head>
 
-	<!--verification of brown email-->
-<body>
-	<div class="banner">
-		<img class=logo src="logo.png" alt="Language Matches">
-	</div>
-	
-	<div class="formdiv"> <!-- maybe make the background a different color when larger than a phone screen? -->
-		<h1>Admin Log In</h1>
-		<h2>Log in using the admin password!</h2>
-		
-		<form onsubmit="return false;">
-			<!-- Password Login -->
-		  <div class="infodiv">
-				<div class="pink-header">password</div>
-				<div class="form-inputs">
-					<input type="text" id="admin_password">	
-				</div>
-		  </div>
-			
-		
-			
-		</form>
-	</div>
+var loginButton = document.getElementById("log-in-button");
+loginButton.addEventListener("click", function() {
+	// Sends user to the control panel if their password matches what was set
+	if(document.getElementById("admin_password").value == "password"){
+		window.location.href = "/admin";
+	}else{
 
-	<input type="submit" value="Log In" class="log-in-button" id="log-in-button">	
+		alert("Password incorrect, please try again");
+	}
 
-
-	<div class="bottom-panel">
-		
-	</div>
-	
-	<script src="admin-login.js"></script>
-</body>
-</html>
+});
