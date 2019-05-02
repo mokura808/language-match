@@ -429,7 +429,7 @@ let targetLangs = [];
   let isBadPass = isBadPassword(password);
   const bio = document.getElementById("bio").value;
   const availability = document.getElementById("availability").value;
-  if(firstname == '' || lastname == '' || email == '' || password == '' || passwordConfirm == '' || bio == '' || availability == '' ||classyear == ''||(spokenCounter == 1 && targetCounter == 1)) {
+  if(firstname == '' || lastname == '' || email == '' || password == '' || passwordConfirm == '' || bio == '' || availability == '' ||classyear == x ||(spokenCounter == 1 && targetCounter == 1)) {
 	alert("Please fill out all input fields. You must either teach or learn");
   	evento.preventDefault();
 
@@ -447,11 +447,11 @@ let targetLangs = [];
   		evento.preventDefault();
 
   // check if there are double languages
-  } else if (!(document.getElementById('noteach').checked) && checkDuplicates(spokenLangs)) {
+  } else if (!(document.getElementById('nospeak').checked) && checkDuplicates(spokenLangs)) {
   	alert("Uh oh! You've listed the same language twice in \"Spoken Language(s)\". Please remove one");
   	evento.preventDefault();
 
-  } else if (!(document.getElementById('nospeak').checked) && checkDuplicates(targetLangs)) {
+  } else if (!(document.getElementById('noteach').checked) && checkDuplicates(targetLangs)) {
   	alert("Uh oh! You've listed the same language twice in \"Target Language(s)\". Please remove one");
   	evento.preventDefault();
 
