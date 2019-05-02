@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<title>Partner Display</title>
+
+<link rel="stylesheet" type="text/css" href="../style.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</head>
+
+<!--verification of brown email-->
+<body>
+
+	<div class="banner">
+		<img class=logo src="../logo.png" alt="Language Matches">
+	</div>
+
+	<div class="formdiv"> <!-- maybe make the background a different color when larger than a phone screen? -->
+		<h1 title="{{user_id}}" id="welcome-message">Welcome, {{firstname}} {{lastname}}!</h1>
+		<h2>{{email}}</h2>
+
+		<!-- teacher partners -->
+		<div class="infodiv">
+			<h3>Who you will be teaching:</h3>
+			<!-- display partners in a list -->
+			<ul id="teachers-container" class="container">
+			</ul>
+		</div>
+
+		<div class="divider"></div>
+
+		<!-- learner partners -->
+		<div class="infodiv">
+			<h3>Who you will be learning from:</h3>
+			<!-- display partners in a list -->
+			<ul id="learners-container" class="container">
+			</ul>
+		</div>
+
+  </div>
+
+  <input type="submit" value="Logout" class="log-out-button" id="log-out-button"/>
+
+
+	<div class="bottom-panel">
+		<img class=brownlogo src="../brownlogo.png" alt="Brown Logo">
+	</div>
+
+		<script>
+		// first get matches information
+// need this user's information still!
+// {{roomName}}
+
+// get user_id
+//var username = prompt("Enter your email");
+//var password = prompt("Enter your password");
+
+
+var logoutButton = document.getElementById("log-out-button");
+logoutButton.addEventListener("click", function() {
+   window.location.href = "../home";
+  }
+);
+
+
+var user_id = document.getElementById("welcome-message").title;
+
+$.post('/displayPartners', {user_id: user_id}, function(final_list) {
+  // callback
+  console.log("here");
+  // get list elements to populate
+  var teachers_list = final_list[0];
+  var learners_list = final_list[1];
+
+  var teachersContainer = document.getElementById("teachers-container");
+  var learnersContainer = document.getElementById("learners-container");
+  let partnerLists = [[teachers_list, teachersContainer], [learners_list, learnersContainer]];
+  console.log("here2");
+  let index = 0;
+  partnerLists.forEach(function(list) {
+    var counter = 0;
+    list[0].forEach(function(person) {
+      // for each teacher/learner, where their info is provided in a dictionary:
+      var newMatchDiv = document.createElement("li");
+    	newMatchDiv.className += "partner-container";
+
+      // display match's name
+      var partnerBox = document.createElement("div");
+      partnerBox.className += "partnerBox";
+      partnerBox.innerHTML = person["firstname"] + " " + person["lastname"];
+
+      // display rest of match's info
+      var partnerInfoDiv = document.createElement("ul");
+      partnerInfoDiv.className += "partnerInfo";
+      let infoList = [["email", person["email"]], ["language", person["language"]],
+        ["proficiency", person["Fluency"]], ["bio", person["bio"]], ["availability", person["availability"]]];
+      infoList.forEach(function(element) {
+        var newListItem = document.createElement("li");
+        newListItem.className += "partnerInfoInt";
+
+        // div 1, header
+        var div1 = document.createElement("div");
+        div1.className += "section-label";
+        div1.innerHTML = element[0];
+
+        // div 2, content
+        var div2 = document.createElement("div");
+        div2.innerHTML = element[1];
+
+        // add divs to partnerInfoInt
+        newListItem.appendChild(div1);
+        newListItem.appendChild(div2);
+        partnerInfoDiv.appendChild(newListItem);
+
+        counter = counter + 1;
+
+      });
+
+      newMatchDiv.appendChild(partnerBox);
+      newMatchDiv.appendChild(partnerInfoDiv);
+
+      // append this partner div to the appropriate displayed list
+      list[1].appendChild(newMatchDiv);
+    });
+
+    // if no partners, then display something else
+
+    if (counter == 0) {
+      console.log("hits here")
+      // display default
+      //list[1].innerHTML = "Sorry, no matches to display! Please check back ";
+      if (index == 0) { // who you are teaching
+        list[1].innerHTML = "Looks like you've either chosen not to teach a language, or you've requested a unique language! Sorry we don't have any matches for you. Please get in touch with languages@brown.edu if you're still interested in finding a potential partner.";
+      } else if (index == 1) {
+        list[1].innerHTML = "Looks like you've either chosen not to learn a language, or you've requested a unique language! Sorry we don't have any matches for you. Please get in touch with languages@brown.edu if you're still interested in finding a potential partner.";
+      } else {
+        list[1].innerHTML = "Looks like you've requested a unique language! Sorry we don't have any matches for you. Please get in touch with languages@brown.edu if you're still interested in finding a potential partner.";
+      }
+      
+    }
+    index = index + 1;
+
+  });
+
+		});
+
+	</script>
+	<!--<script src="partner-display.js"></script>-->
+</body>
+</html>
