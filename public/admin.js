@@ -70,9 +70,9 @@ viewButton.addEventListener("click", function(evento) {
             // start of download csv portion; maybe put all of this in the js and just send over the relevant data
             let today = new Date();
             let date = (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getFullYear();
-            let time = today.getHours() + ":" + today.getMinutes();
-            let fullDate = date + '-' + time;
-            let filename = 'matches-' + fullDate + '.csv';
+            let time = today.getHours() + "-" + today.getMinutes();
+            let fullDate = date + '_' + time;
+            let filename = 'matches_' + fullDate + '.csv';
             console.log("New file name: " + filename);
 
             //var data, filename, link;
@@ -107,7 +107,7 @@ viewAllUsersButton.addEventListener("click", function(evento) {
             console.log("Post data received in browser");
             var csv = '';
             // add column titles at top of file
-            csv += ',Name,Email,Bio,Availability, Class Year\n';
+            csv += ',Name,Email,Bio,Availability,Class Year\n';
             //csv += ',Key,Room Name\n';
             var counter = 1;
             data.forEach(function(element) {
@@ -120,9 +120,9 @@ viewAllUsersButton.addEventListener("click", function(evento) {
             // start of download csv portion; maybe put all of this in the js and just send over the relevant data
             let today = new Date();
             let date = (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getFullYear();
-            let time = today.getHours() + ":" + today.getMinutes();
-            let fullDate = date + '-' + time;
-            let filename = 'allusers-' + fullDate + '.csv';
+            let time = today.getHours() + "-" + today.getMinutes();
+            let fullDate = date + '_' + time;
+            let filename = 'allusers_' + fullDate + '.csv';
             console.log("New file name: " + filename);
 
             if (!csv.match(/^data:text\/csv/i)) {
@@ -151,7 +151,7 @@ viewUnmatchedLearnersButton.addEventListener("click", function(evento) {
             console.log("Post data received in browser");
             var csv = '';
             // add column titles at top of file
-            csv += ',Name,Email,Language,Fluency\n';
+            csv += ',Name,Email,Language,Fluency,Class Year\n';
             var counter = 1;
             data.forEach(function(element) {
               // for each entry, write it to a line of the csv file
@@ -194,7 +194,7 @@ viewUnmatchedTeachersButton.addEventListener("click", function(evento) {
             console.log("Post data received in browser");
             var csv = '';
             // add column titles at top of file
-            csv += ',Name,Email,Language,Fluency\n';
+            csv += ',Name,Email,Language,Fluency,Class Year\n';
             var counter = 1;
             data.forEach(function(element) {
               // for each entry, write it to a line of the csv file
@@ -298,4 +298,3 @@ resetButton.addEventListener("click", function() {
     alert("Username/password combination incorrect. Please try again");
     window.location.href = "/home";
 }
-
