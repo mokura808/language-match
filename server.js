@@ -786,7 +786,7 @@ app.post('/sendEmail', sendOut);
 
     function sendOut() {
     let emails = 'SELECT email FROM users WHERE matched = 1';
-    let to_list = ['melokura3@gmail.com]
+    let to_list = ['melokura3@gmail.com']
 
     conn.query(emails, function(err, email, fields){
         console.log(email);
