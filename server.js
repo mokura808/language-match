@@ -895,7 +895,7 @@ app.post('/sendEmail', sendOut);
     //maybe make a variable that is just like mailOptions and use the transporter again to send
     var mailOptions_noMatch = {
         from: 'brownlanguagematches@gmail.com',
-        to: 'noMatch_list', //replace later with list of users with no match
+        to: noMatch_list,
         subject: 'Language Match Update',
         //text: 'unfortunately, you do not have a match :('
         html: { path: __dirname + "/public/noMatch_email.html"}
