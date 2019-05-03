@@ -848,8 +848,8 @@ app.post('/sendEmail', sendOut);
     function sendOut() {
     let match_emails = 'SELECT email FROM users WHERE matched = 1';
     let noMatch_emails = 'SELECT email FROM users WHERE matched = 0';
-    let matched_list = ['melokura3@gmail.com']
-    let noMatch_list = ['melokura3@gmail.com']
+    let matched_list = ['brownlanguagematches.com']
+    let noMatch_list = ['brownlanguagematches.com']
 
 
     conn.query(match_emails, function(err, email, fields){
@@ -871,13 +871,13 @@ app.post('/sendEmail', sendOut);
         service: 'gmail',
         auth: {
             //for the real one, we'll probably replace this with a noReply email
-            user: 'melokura3@gmail.com',
-            pass: 'SmileyfacE'
+            user: 'brownlanguagematches.com',
+            pass: 'BrownLanguageMatches2020'
         }
     });
 
     var mailOptions_match = {
-        from: 'melokura3@gmail.com',
+        from: 'brownlanguagematches.com',
         to: matched_list,
         subject: 'message testing',
         text: 'Dear Language Matches User, \n Awesome news, your language partners are ready! Sign in to your Language Matches account using the link below to view your matches. Happy learning!',
@@ -894,8 +894,8 @@ app.post('/sendEmail', sendOut);
 
     //maybe make a variable that is just like mailOptions and use the transporter again to send
     var mailOptions_noMatch = {
-        from: 'melokura3@gmail.com',
-        to: 'melia_okura@brown.edu', //replace later with list of users with no match
+        from: 'brownlanguagematches.com',
+        to: 'noMatch_list', //replace later with list of users with no match
         subject: 'Language Match Update',
         //text: 'unfortunately, you do not have a match :('
         html: { path: __dirname + "/public/noMatch_email.html"}
