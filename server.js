@@ -873,8 +873,9 @@ app.post('/sendEmail', sendOut);
 
     var mailOptions_match = {
         from: 'brownlanguagematches@gmail.com',
-        to: matched_list,
-        subject: 'message testing',
+        //to: matched_list,
+        bcc: matched_list,
+        subject: 'Language Match Update',
         text: 'Dear Language Matches User, \n Awesome news, your language partners are ready! Sign in to your Language Matches account using the link below to view your matches. Happy learning!',
         html: { path: __dirname + "/public/match_email.html"}
     };
@@ -890,7 +891,8 @@ app.post('/sendEmail', sendOut);
     //maybe make a variable that is just like mailOptions and use the transporter again to send
     var mailOptions_noMatch = {
         from: 'brownlanguagematches@gmail.com',
-        to: 'noMatch_list', //replace later with list of users with no match
+        //to: noMatch_list,
+        bcc: noMatch_list,
         subject: 'Language Match Update',
         //text: 'unfortunately, you do not have a match :('
         html: { path: __dirname + "/public/noMatch_email.html"}
