@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<title>User Login</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</head>
+
+	<!--verification of brown email-->
+<body>
+	<div class="banner">
+		<img class=logo src="logo.png" alt="Language Matches">
+	</div>
+	
+	<div class="formdiv"> <!-- maybe make the background a different color when larger than a phone screen? -->
+		<h1>Log In</h1>
+		<h2>Log in using your email and password!</h2>
+		
+		<form onsubmit="return false;">
+			<!-- Password Login -->
+		  <div class="infodiv">
+		  		<div class="pink-header">email</div>
+				<div class="form-inputs">
+					<input type="text" id="email">	
+				</div>
+				<div class="pink-header">password</div>
+				<div class="form-inputs">
+					<input type="password" id="password">	
+				</div>
+
+				<p style="max-width: 850px; text-align: center; margin: 18px; font-size: 12px;">
+			*If you have forgotten your login information, please email languages@brown.edu </p>
+		  </div>
+			
+		
+			
+		</form>
+
+	<div>
+		<input type="submit" value="Log In" class="log-in-button" id="log-in-button">	
+    	<input type="submit" value="Home" class="submit-button" id="home-button">
+    </div>
+    	</div>
+	<div class="bottom-panel">
+		<img class=brownlogo src="brownlogo.png" alt="Brown Logo">
+	</div>
+	
+	<script src="user-login.js"></script>
+</body>
+</html>
