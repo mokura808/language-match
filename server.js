@@ -3,7 +3,7 @@
 const express = require('express');
 const app = express();
 
-// Parses request to find roomName, nickname, and message
+// various dependencies
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({
     extended: true
@@ -12,11 +12,6 @@ app.use(bodyParser.json());
 
 const path = require('path');
 let nodemailer= require('nodemailer');
-
-
-//app.use(express.static(__dirname + '../public'));
-
-//app.use(express.static(__dirname + '/public'));
 
 //Template code for mustache
 const engines = require('consolidate');
@@ -175,7 +170,6 @@ function handledate(request, response) {
 };
 app.post('/getDeadline', function(request, response) {
     conn.query('SELECT date FROM deadline', function(error, data) {
-        console.log("getting date from server")
         response.json(data);
     });
 });
@@ -218,51 +212,40 @@ app.get('/submission_updated', function(request, response) {
 app.post('/viewData', function(request, response) {
     conn.query('SELECT c.language, c.firstname AS tfirst, c.lastname AS tlast, c.email AS temail, c.classyear AS tclass, c.teacher_fluency, b.firstname AS lfirst, b.lastname AS llast, b.email AS lemail, b.classyear AS lclass, c.learner_fluency FROM users AS b JOIN (SELECT a.firstname, a.lastname, a.email, a.classyear, matched_users.learner_id, matched_users.language, matched_users.teacher_fluency, matched_users.learner_fluency FROM \
         users AS a JOIN matched_users WHERE a.id=matched_users.teacher_id) AS c WHERE b.id=c.learner_id', function(error, data) {
-        console.log(data);
         response.json(data);
     });
 });
 // to view all users who are signed up
 app.post('/viewAllUsers', function(request, response) {
-    console.log("Post request for all users received");
     conn.query('SELECT firstname AS tfirst, lastname, email, password, bio, availability, classyear FROM users', function(error, data) {
-        console.log(data)
         response.json(data);
-        console.log("Sent all users data to browser");
     });
 });
 
 // to view learners who are unmatched
 app.post('/viewUnmatchedLearners', function(request, response) {
-    console.log("Post request for unmatched learners received");
     conn.query('SELECT users.firstname AS lfirst, users.lastname, users.email, learner.language, learner.learner_fluency, users.classyear FROM learner JOIN users ON learner.learner_id=users.id', function(error, data) {
         response.json(data);
-        console.log("Sent all unmatched learners data to browser");
     });
 });
 
 // to view teachers who are unmatched
 app.post('/viewUnmatchedTeachers', function(request, response) {
-    console.log("Post request for unmatched teachers received");
     conn.query('SELECT users.firstname AS tfirst, users.lastname, users.email, teacher.language, teacher.teacher_fluency, users.classyear FROM teacher JOIN users ON teacher.teacher_id=users.id', function(error, data) {
         response.json(data);
-        console.log("Sent all unmatched teachers data to browser");
     });
 });
 
 // send languages
 app.get('/getLanguages', function(request, response) {
-    console.log("Get request for languages list received");
     conn.query('SELECT language FROM languages', function(error, data) {
         response.json(data);
-        console.log("Sent offered languages to browser");
     });
 
 });
 
 // send languages
 app.post('/updateLanguages', function(request, response) {
-    console.log("Post request for languages list received");
 
     let languagesList = request.body.languages;
 
@@ -270,7 +253,6 @@ app.post('/updateLanguages', function(request, response) {
         if (error) {
             console.log(error);
         } else {
-            console.log("old languages removed")
             conn.query('INSERT INTO languages VALUES ?', [languagesList], function(error, data) {
                 console.log("Updated languages in server");
             });
@@ -341,7 +323,6 @@ function displayPartners(request, response) {
             let c2 = 0;
             let check_if_first_loop_done = 0;
             if (whoYouTeach_list.length > 0 && yourTeachers_list.length > 0) {
-                console.log("case1")
                 for (let j in whoYouTeach_list) {
                     let k = whoYouTeach_list[j][0];
                     conn.query('SELECT * from users WHERE id = ?', [k], function(error, data) {
@@ -364,9 +345,6 @@ function displayPartners(request, response) {
                             check_if_first_loop_done = check_if_first_loop_done + 1;
 
                         }
-
-                     //   console.log("before loop")
-                       // console.log(yourTeachers_list)
 
                         if(check_if_first_loop_done == whoYouTeach_list.length){
                             for (let z in yourTeachers_list) {
@@ -401,7 +379,6 @@ function displayPartners(request, response) {
             //CASE 2: Only teaching
             let teacherlistlength = 0;
             if (whoYouTeach_list.length > 0 && yourTeachers_list.length == 0) {
-                                console.log("case2")
 
                 for (let j in whoYouTeach_list) {
                     let k = whoYouTeach_list[j][0];
@@ -433,7 +410,6 @@ function displayPartners(request, response) {
             let counter = 0;
             //CASE 3: Only learning
             if (whoYouTeach_list.length == 0 && yourTeachers_list.length > 0) {
-                                console.log("case3")
 
                 for (let j in yourTeachers_list) {
                     let k = yourTeachers_list[j][0];
@@ -528,21 +504,14 @@ app.post('/submission_pressed', saveUser);
 
 function saveUser(request, response) {
     const firstname = request.body.firstname;
-    //console.log(firstname);
     const lastname = request.body.lastname;
-    //console.log(lastname);
     const email = request.body.email.toLowerCase();
-    //console.log(email);
     const password = request.body.password;
-    //console.log(password);
     const bio = request.body.bio;
     // 0 = non matched 1 = matched 
     const matched = 0;
-    //console.log(bio);
     const availability = request.body.availability;
     const classyear = request.body.classyear;
-
-    //console.log(availability);
 
     //target list stores target langugages users want
     const targetlist = request.body.targetlist;
@@ -559,7 +528,6 @@ function saveUser(request, response) {
         data.forEach(function(element) {
             numUsers = numUsers + 1;
         });
-        console.log("People with same email: " + numUsers.toString());
       
         // someone already using this email
         if (numUsers > 0) {
@@ -576,7 +544,7 @@ function saveUser(request, response) {
             if (error) {
                 console.log(error)
             } else {
-                console.log(data4);
+                //console.log(data4);
             }
         });
         conn.query('SELECT LAST_INSERT_ID();', function(error, data2) {
@@ -609,24 +577,20 @@ function saveUser(request, response) {
 
                     conn.query('INSERT INTO matched_users VALUES(?,?,?,?,?)', [id_number, teacher_id, language, learner_fluency, teacher_fluency], function(error, data) {
                       if (error) {
-                        console.log("Error inserting a new match into database");
                         console.log(error);
                       } else {
-                        console.log("updating matched number")
                         conn.query('UPDATE users SET matched = ? WHERE id =?', [1,id_number], function(error, data) {
                               if (error) {
-                                console.log("Error updating matched number");
                                 console.log(error);
                                 } else {
-                                console.log("updating succces")
+                                //console.log("updating succces")
                             }
                         });
                         conn.query('UPDATE users SET matched = ? WHERE id =?', [1,teacher_id], function(error, data) {
                               if (error) {
-                                console.log("Error updating matched number");
                                 console.log(error);
                                 } else {
-                                console.log("updating succces")
+                                //console.log("updating succces")
                             }
                         });
                         console.log("New matched pair created: " + teacher_id.toString() + ", " + id_number.toString());
