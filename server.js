@@ -517,7 +517,6 @@ function saveUser(request, response) {
     const targetlist = request.body.targetlist;
 
     // spoken list stores languages the users speak and the number of partners the user wants
-    //const spokenlist = [];
     const spokenlist = request.body.spokenlist;
 
     let id_number;
@@ -548,7 +547,6 @@ function saveUser(request, response) {
             }
         });
         conn.query('SELECT LAST_INSERT_ID();', function(error, data2) {
-           // id_number = data2[0]['LAST_INSERT_ID()'];
             id_number = id;
              if(targetlist != undefined){
             for (let i = 0; i < targetlist.length; i++) {
@@ -685,9 +683,6 @@ function saveUser(request, response) {
                     console.log("counter early " + counter)
 
                   });
-                 // console.log("counter")
-                  //console.log(counter)
-                  //var j = counter; 
                   // if any leftover entries (no matches), add new user to teacher table
                   console.log("counter " + counter)
                   for (let j = counter; j > 0; j--) {
@@ -814,7 +809,6 @@ function resetData(request, response) {
 };
 
 app.post('/sendEmail', sendOut);
-//hardcore check the variables as I am making the no-match-emails
 
     function sendOut() {
     let match_emails = 'SELECT email FROM users WHERE matched = 1';
@@ -841,7 +835,6 @@ app.post('/sendEmail', sendOut);
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            //for the real one, we'll probably replace this with a noReply email
             user: 'brownlanguagematches@gmail.com',
             pass: 'BrownLanguageMatches2020'
         }
@@ -849,7 +842,6 @@ app.post('/sendEmail', sendOut);
 
     var mailOptions_match = {
         from: 'brownlanguagematches@gmail.com',
-        //to: matched_list,
         bcc: matched_list,
         subject: 'Language Match Update',
         text: 'Dear Language Matches User, \n Awesome news, your language partners are ready! Sign in to your Language Matches account using the link below to view your matches. Happy learning!',
@@ -862,15 +854,14 @@ app.post('/sendEmail', sendOut);
         } else {
             console.log('Email for matches sent: ' + info.response);
         }
-    }); //transporter ends here
+    }); 
 
     //maybe make a variable that is just like mailOptions and use the transporter again to send
     var mailOptions_noMatch = {
         from: 'brownlanguagematches@gmail.com',
-        //to: noMatch_list,
         bcc: noMatch_list,
         subject: 'Language Match Update',
-        //text: 'unfortunately, you do not have a match :('
+        text: 'Dear Language Matches User, \n Unfortunately, we did not have a match for you this semester. But please contact this email if you wish to pursue this language more!',
         html: { path: __dirname + "/public/noMatch_email.html"}
     }
 
@@ -882,7 +873,7 @@ app.post('/sendEmail', sendOut);
         }
     });
 
-}; //sendout ends here
+};
 
 
 app.listen(8081, function() {
