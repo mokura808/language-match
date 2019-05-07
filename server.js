@@ -123,13 +123,13 @@ var open = 1;
 conn.query('SELECT open FROM deadline', function(error, data) {
      data.forEach(function(element) {
         open = element['open'];
-        console.log("open set as")
-        console.log(open)
+       // console.log("open set as")
+       // console.log(open)
     });
 });
 
-console.log("open starts as")
-console.log(open);
+//console.log("open starts as")
+//console.log(open);
 
 app.post('/dateSumbitted', handledate);
 
@@ -254,7 +254,7 @@ app.post('/updateLanguages', function(request, response) {
             console.log(error);
         } else {
             conn.query('INSERT INTO languages VALUES ?', [languagesList], function(error, data) {
-                console.log("Updated languages in server");
+               // console.log("Updated languages in server");
             });
         }
     });
@@ -475,7 +475,7 @@ function checklogin(request, response) {
             lastname = element['lastname'];
         });
         if (numUsers > 1) { // this should never happen
-            console.log("There are multiple users with the same email and password! :(");
+          //  console.log("There are multiple users with the same email and password! :(");
         } else if (numUsers > 0) { // this means a user was found with the matching credentials
 
             // get the user's information and display it in the rendered page
@@ -591,25 +591,25 @@ function saveUser(request, response) {
                                 //console.log("updating succces")
                             }
                         });
-                        console.log("New matched pair created: " + teacher_id.toString() + ", " + id_number.toString());
+                       // console.log("New matched pair created: " + teacher_id.toString() + ", " + id_number.toString());
                       }
                     });
                     // remove teacher from teacher table
                     conn.query('DELETE FROM teacher WHERE teacher_id=? AND language=? LIMIT 1', [teacher_id, language], function(error, data) {
                       if (error) {
-                        console.log("Error removing teacher from teacher database");
+                       // console.log("Error removing teacher from teacher database");
                         console.log(error);
                       } else {
-                        console.log("Teacher removed from database: " + teacher_id.toString());
+                      //  console.log("Teacher removed from database: " + teacher_id.toString());
                       }
                     });
                   // if no match, add new user to learners table
                   } else {
                     conn.query('INSERT INTO learner VALUES(?,?,?)', [id_number, language, learner_fluency], function(error, data) {
                       if (error) {
-                        console.log("Error adding learner to learner database");
+                       // console.log("Error adding learner to learner database");
                       } else {
-                        console.log("No teacher found; new learner added to database: " + id_number.toString());
+                      //  console.log("No teacher found; new learner added to database: " + id_number.toString());
                       }
                     });
                   }
@@ -619,7 +619,7 @@ function saveUser(request, response) {
         }
             
          //TEACHERS 
-          console.log("spokenlist teacher")
+        //  console.log("spokenlist teacher")
           if(spokenlist != undefined){
             for (let i = 0; i < spokenlist.length; i++) {
                 // each entry is a language, fluency, max number of matches
@@ -640,20 +640,20 @@ function saveUser(request, response) {
                   let counter = max_matches;
 
                   // add each matching pair to matched_users
-                     console.log("data")
-                     console.log(data)
+                   //  console.log("data")
+                    // console.log(data)
                   data.forEach(function(element) {
 
                     learner_id = element['learner_id'];
                     learner_fluency = element['learner_fluency'];
                     conn.query('INSERT INTO matched_users VALUES(?,?,?,?,?)', [learner_id, id_number, language, learner_fluency, teacher_fluency], function(error, data) {
                       if (error) {
-                        console.log("Error inserting a new match into database");
+                      //  console.log("Error inserting a new match into database");
                         console.log(error);
                       } else {
                             conn.query('UPDATE users SET matched = ? WHERE id =?', [1,id_number], function(error, data) {
                               if (error) {
-                                console.log("Error updating matched number 2");
+                              //  console.log("Error updating matched number 2");
                                 console.log(error);
                                 } else {
                                 console.log("updating succces 2")
@@ -661,36 +661,36 @@ function saveUser(request, response) {
                         });
                                  conn.query('UPDATE users SET matched = ? WHERE id =?', [1,learner_id], function(error, data) {
                               if (error) {
-                                console.log("Error updating matched number");
+                               // console.log("Error updating matched number");
                                 console.log(error);
                                 } else {
-                                console.log("updating succces")
+                               // console.log("updating succces")
                             }
                         });
-                        console.log("New matched pair created 2: " + learner_id.toString() + ", " + id_number.toString());
+                       // console.log("New matched pair created 2: " + learner_id.toString() + ", " + id_number.toString());
                       }
                     });
                     // remove learner from learner table
                     conn.query('DELETE FROM learner WHERE learner_id=? AND language=?', [learner_id, language], function(error, data) {
                       if (error) {
-                        console.log("Error removing learner from learner database");
+                       // console.log("Error removing learner from learner database");
                         console.log(error);
                       } else {
-                        console.log("Learner removed from database: " + learner_id.toString());
+                      //  console.log("Learner removed from database: " + learner_id.toString());
                       }
                     });
                     counter = counter - 1;
-                    console.log("counter early " + counter)
+                   // console.log("counter early " + counter)
 
                   });
                   // if any leftover entries (no matches), add new user to teacher table
-                  console.log("counter " + counter)
+                //  console.log("counter " + counter)
                   for (let j = counter; j > 0; j--) {
                     conn.query('INSERT INTO teacher VALUES(?,?,?)', [id_number, language, teacher_fluency], function(error, data) {
                       if (error) {
-                        console.log("Error adding teacher to teacher database");
+                       // console.log("Error adding teacher to teacher database");
                       } else {
-                        console.log("No learner found; new teacher added to database: " + id_number.toString());
+                      //  console.log("No learner found; new teacher added to database: " + id_number.toString());
                       }
                     });
                   }
@@ -698,31 +698,31 @@ function saveUser(request, response) {
             }
         }
 
-            console.log("updated learner:")
+           // console.log("updated learner:")
             conn.query('SELECT * FROM learner', function(error, data5) {
                 if (error) {
                     console.log(error)
                 } else {
-                    console.log(data5);
+                    //console.log(data5);
                 }
             });
-            console.log("updated teacher:")
+            //console.log("updated teacher:")
 
             conn.query('SELECT * FROM teacher', function(error, data6) {
                 if (error) {
                     console.log(error)
                 } else {
-                    console.log(data6);
+                   // console.log(data6);
                 }
             });
 
-            console.log("matched users:")
+           // console.log("matched users:")
 
             conn.query('SELECT * FROM matched_users', function(error, data6) {
                 if (error) {
                     console.log(error)
                 } else {
-                    console.log(data6);
+                   // console.log(data6);
                 }
             });
 
@@ -818,14 +818,14 @@ app.post('/sendEmail', sendOut);
 
 
     conn.query(match_emails, function(err, email, fields){
-        console.log(email);
+        //console.log(email);
         for(k in email){
             matched_list.push(email[k].email)
           }
       });
 
     conn.query(noMatch_emails, function(err, email, fields){
-        console.log(email);
+        //console.log(email);
         for(k in email){
             noMatch_list.push(email[k].email)
           }
@@ -852,7 +852,7 @@ app.post('/sendEmail', sendOut);
         if(error) {
             console.log(error);
         } else {
-            console.log('Email for matches sent: ' + info.response);
+           // console.log('Email for matches sent: ' + info.response);
         }
     }); 
 
@@ -869,7 +869,7 @@ app.post('/sendEmail', sendOut);
         if(error) {
             console.log(error);
         } else {
-            console.log('Email for no matches sent: ' + info.response);
+           // console.log('Email for no matches sent: ' + info.response);
         }
     });
 
