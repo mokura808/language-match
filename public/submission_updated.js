@@ -18,8 +18,8 @@ function getLanguages(dropdownElement) {
 			data.forEach(function(element) {
 				var addOption = document.createElement("option");
 				addOption.value = element['language'].toLowerCase();
-				console.log("new option: " + element['language']);
-				console.log(addOption.value);
+				//console.log("new option: " + element['language']);
+				//console.log(addOption.value);
 				addOption.innerHTML = element['language'];
 				dropdownElement.appendChild(addOption);
 			});
@@ -149,9 +149,9 @@ addSpokenButton.addEventListener("click", function() {
 			if (children[i].id == newLangDiv.id) {
 				var idNum = children[i].id[children[i].id.length - 1];
 				delete spokenDict["spokenlanguage" + idNum];
-				console.log("removed " + "spokenlanguage" + idNum + " from dict");
+				//console.log("removed " + "spokenlanguage" + idNum + " from dict");
 				parentContainer.removeChild(children[i]);
-				console.log("Language entry successfully removed:", newLangDiv.id);
+				//console.log("Language entry successfully removed:", newLangDiv.id);
 				break;
 			}
 		}
@@ -165,8 +165,7 @@ addSpokenButton.addEventListener("click", function() {
 
   // add relevant info to spoken dictionary
   spokenDict[newTextBox.id] = [newDropDown.id, newMaxMatches.id];
-
-	console.log("Language added to spoken languages");
+	//console.log("Language added to spoken languages");
 });
 /*
 	if(document.getElementById('nospeak').checked){
@@ -272,9 +271,9 @@ addTargetButton.addEventListener("click", function() {
 			if (children[i].id == newLangDiv.id) {
 				var idNum = children[i].id[children[i].id.length - 1];
 				delete targetDict["targetlanguage" + idNum];
-				console.log("removed " + "targetlanguage" + idNum + " from dict");
+				//console.log("removed " + "targetlanguage" + idNum + " from dict");
 				parentContainer.removeChild(children[i]);
-				console.log("Language entry successfully removed:", newLangDiv.id);
+				//console.log("Language entry successfully removed:", newLangDiv.id);
 				break;
 			}
 		}
@@ -289,7 +288,7 @@ addTargetButton.addEventListener("click", function() {
   // add relevant info to target dictionary
   targetDict[newTextBox.id] = newDropDown.id;
 
-	console.log("Language added to target languages");
+	//console.log("Language added to target languages");
 });
 
  function showPass() {
@@ -465,12 +464,12 @@ let targetLangs = [];
 
 	  	if(document.getElementById('nospeak').checked){
 	 		//Only want to learn
-	 		console.log("no speak")
+	 		//console.log("no speak")
 	 		spokenDictValues = [];
 
 	 	} 
 	 	if(document.getElementById('noteach').checked){
-	 		console.log("no teach")
+	 		//console.log("no teach")
 	 		// Only want to teach 
 	 		targetDictValues = [];
 
@@ -481,7 +480,7 @@ let targetLangs = [];
 
 		/********** NEW *************/
 		let emailEnd = email.slice(-10);
-		console.log("email end: " + emailEnd);
+		//console.log("email end: " + emailEnd);
 
 	  	if (emailEnd != "@brown.edu") {
 	  		alert("Must use a valid Brown email");
