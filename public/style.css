@@ -4,7 +4,7 @@
 
 .banner {
   background-color: #3694bb;
-  height: 46px;
+  height: 80px;
   text-align: center;
   padding: 5px;
   position: fixed;
@@ -127,7 +127,7 @@ textarea {
   font-size: 20px;
 }
 .logo{
-  height: 50px;
+  height: 70px;
 }
 .brownlogo{
   height: 100px;
@@ -361,6 +361,7 @@ h3 {
 }
 
 body {
+  margin-top: 35px;
   display: flex;
   flex-direction: column;
   text-align: center;
