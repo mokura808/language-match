@@ -843,7 +843,7 @@ app.post('/sendEmail', sendOut);
     var mailOptions_match = {
         from: 'brownlanguagematches@gmail.com',
         bcc: matched_list,
-        subject: 'Language Match Update',
+        subject: 'Brown Language Matches Update',
         text: 'Dear Language Matches User, \n Awesome news, your language partners are ready! Sign in to your Language Matches account using the link below to view your matches. Happy learning!',
         html: { path: __dirname + "/public/match_email.html"}
     };
@@ -860,7 +860,7 @@ app.post('/sendEmail', sendOut);
     var mailOptions_noMatch = {
         from: 'brownlanguagematches@gmail.com',
         bcc: noMatch_list,
-        subject: 'Language Match Update',
+        subject: 'Brown Language Matches Update',
         text: 'Dear Language Matches User, \n Unfortunately, we did not have a match for you this semester. But please contact this email if you wish to pursue this language more!',
         html: { path: __dirname + "/public/noMatch_email.html"}
     }
