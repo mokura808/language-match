@@ -98,7 +98,7 @@ viewButton.addEventListener("click", function(evento) {
             console.log("Post data received in browser");
             var csv = '';
             // add column titles at top of file
-            csv += ',Matched Language,Teacher,Teacher Email,Learner Class,Teacher Fluency,Learner,Learner Email,Learner Class,Learner Fluency\n';
+            csv += ',Matched Language,Speaker,Speaker Email,Learner Class,Speaker Fluency,Learner,Learner Email,Learner Class,Learner Fluency\n';
             //csv += ',Key,Room Name\n';
             var counter = 1;
             data.forEach(function(element) {
@@ -271,7 +271,7 @@ viewUnmatchedTeachersButton.addEventListener("click", function(evento) {
             let date = (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getFullYear();
             let time = today.getHours() + "-" + today.getMinutes();
             let fullDate = date + '_' + time;
-            let filename = 'unmatchedteachers_' + fullDate + '.csv';
+            let filename = 'unmatchedspeakers_' + fullDate + '.csv';
             console.log("New file name: " + filename);
 
             if (!csv.match(/^data:text\/csv/i)) {
