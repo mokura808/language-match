@@ -98,7 +98,7 @@ viewButton.addEventListener("click", function(evento) {
             console.log("Post data received in browser");
             var csv = '';
             // add column titles at top of file
-            csv += ',Matched Language,Speaker,Speaker Email,Learner Class,Speaker Fluency,Learner,Learner Email,Learner Class,Learner Fluency\n';
+            csv += ',Matched Language,Speaker,Speaker Email,Speaker Class,Speaker Fluency,Learner,Learner Email,Learner Class,Learner Fluency\n';
             //csv += ',Key,Room Name\n';
             var counter = 1;
             data.forEach(function(element) {
